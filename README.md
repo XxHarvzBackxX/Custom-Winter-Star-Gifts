@@ -6,4 +6,4 @@ Via content packs, you can now edit the gifts given at the Feast of the Winter S
 [Mod Page](https://www.nexusmods.com/stardewvalley/mods/8587)
 [Content Pack Guide](Content-Pack-Guide.md)
 
-![Banner](https://github.com/XxHarvzBackxX/Custom-Winter-Star-Gifts/blob/main/CWSG.png?raw=true)
+![Banner](https://github.com/XxHarvzBackxX/Custom-Winter-Star-Gifts/blob/main/misc/Banner.png?raw=true)
