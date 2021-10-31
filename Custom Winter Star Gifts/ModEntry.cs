@@ -144,9 +144,9 @@ public class ModEntry : Mod
                             }
                         }
                     }
-                        __result = possibleObjects[r.Next(possibleObjects.Count)];
-                    }
-                    return false; // don't run original logic
+                }
+                __result = possibleObjects[r.Next(possibleObjects.Count)];
+                return false; // don't run original logic
             }
             catch (Exception ex)
             {
