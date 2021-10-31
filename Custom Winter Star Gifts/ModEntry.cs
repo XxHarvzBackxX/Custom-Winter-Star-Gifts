@@ -10,7 +10,7 @@ using Object = StardewValley.Object;
 /// <summary>The mod entry point.</summary>
 public class ModEntry : Mod
 {
-    public static ModData Data = new ModData();
+    public static List<ModData> Data = new List<ModData>();
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
     public override void Entry(IModHelper helper)
@@ -28,13 +28,11 @@ public class ModEntry : Mod
             if (!contentPack.HasFile("content.json"))
             {
                 Monitor.Log($"{contentPack.Manifest.Name} {contentPack.Manifest.Version} is missing a \"content.json\" file.");
-                ModData data = new ModData();
-                contentPack.WriteJsonFile("content.json", data);
             }
             else
             {
                 ModData modData = contentPack.ReadJsonFile<ModData>("content.json");
-                Data = modData;
+                Data.Add(modData);
             }
         }
         ObjectPatches.Initialize(Monitor, helper);
@@ -77,75 +75,78 @@ public class ModEntry : Mod
             {
                 Random r = new Random((int)Game1.uniqueIDForThisGame / 2 + Game1.year + Game1.dayOfMonth + Utility.getSeasonNumber(Game1.currentSeason) + who.getTileX());
                 List<Item> possibleObjects = new List<Item>();
-                foreach (NPCGifts g in Data.NPCGifts)
+                foreach (ModData m in Data)
                 {
-                    if (g.Mode == "Add")
+                    foreach (NPCGifts g in m.NPCGifts)
                     {
-                        switch (who.Name)
+                        if (g.Mode == "Add")
                         {
-                            case "Clint":
-                                possibleObjects.Add(new Object(337, 1));
-                                possibleObjects.Add(new Object(336, 5));
-                                possibleObjects.Add(new Object(r.Next(535, 538), 5));
-                                break;
-                            case "Marnie":
-                                possibleObjects.Add(new Object(176, 12));
-                                break;
-                            case "Robin":
-                                possibleObjects.Add(new Object(388, 99));
-                                possibleObjects.Add(new Object(390, 50));
-                                possibleObjects.Add(new Object(709, 25));
-                                break;
-                            case "Willy":
-                                possibleObjects.Add(new Object(690, 25));
-                                possibleObjects.Add(new Object(687, 1));
-                                possibleObjects.Add(new Object(703, 1));
-                                break;
-                            case "Evelyn":
-                                possibleObjects.Add(new Object(223, 1));
-                                break;
-                            default:
-                                if (who.Age == 2)
-                                {
-                                    possibleObjects.Add(new Object(330, 1));
-                                    possibleObjects.Add(new Object(103, 1));
-                                    possibleObjects.Add(new Object(394, 1));
-                                    possibleObjects.Add(new Object(r.Next(535, 538), 1));
-                                    break;
-                                }
-                                possibleObjects.Add(new Object(608, 1));
-                                possibleObjects.Add(new Object(651, 1));
-                                possibleObjects.Add(new Object(611, 1));
-                                possibleObjects.Add(new Ring(517));
-                                possibleObjects.Add(new Object(466, 10));
-                                possibleObjects.Add(new Object(422, 1));
-                                possibleObjects.Add(new Object(392, 1));
-                                possibleObjects.Add(new Object(348, 1));
-                                possibleObjects.Add(new Object(346, 1));
-                                possibleObjects.Add(new Object(341, 1));
-                                possibleObjects.Add(new Object(221, 1));
-                                possibleObjects.Add(new Object(64, 1));
-                                possibleObjects.Add(new Object(60, 1));
-                                possibleObjects.Add(new Object(70, 1));
-                                break;
-                        }
-                    }
-                    if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
-                    {
-                        foreach (string itemName in g.ItemNames)
-                        {
-                            foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
+                            switch (who.Name)
                             {
-                                if (kvp.Value.Split('/')[4] == itemName)
+                                case "Clint":
+                                    possibleObjects.Add(new Object(337, 1));
+                                    possibleObjects.Add(new Object(336, 5));
+                                    possibleObjects.Add(new Object(r.Next(535, 538), 5));
+                                    break;
+                                case "Marnie":
+                                    possibleObjects.Add(new Object(176, 12));
+                                    break;
+                                case "Robin":
+                                    possibleObjects.Add(new Object(388, 99));
+                                    possibleObjects.Add(new Object(390, 50));
+                                    possibleObjects.Add(new Object(709, 25));
+                                    break;
+                                case "Willy":
+                                    possibleObjects.Add(new Object(690, 25));
+                                    possibleObjects.Add(new Object(687, 1));
+                                    possibleObjects.Add(new Object(703, 1));
+                                    break;
+                                case "Evelyn":
+                                    possibleObjects.Add(new Object(223, 1));
+                                    break;
+                                default:
+                                    if (who.Age == 2)
+                                    {
+                                        possibleObjects.Add(new Object(330, 1));
+                                        possibleObjects.Add(new Object(103, 1));
+                                        possibleObjects.Add(new Object(394, 1));
+                                        possibleObjects.Add(new Object(r.Next(535, 538), 1));
+                                        break;
+                                    }
+                                    possibleObjects.Add(new Object(608, 1));
+                                    possibleObjects.Add(new Object(651, 1));
+                                    possibleObjects.Add(new Object(611, 1));
+                                    possibleObjects.Add(new Ring(517));
+                                    possibleObjects.Add(new Object(466, 10));
+                                    possibleObjects.Add(new Object(422, 1));
+                                    possibleObjects.Add(new Object(392, 1));
+                                    possibleObjects.Add(new Object(348, 1));
+                                    possibleObjects.Add(new Object(346, 1));
+                                    possibleObjects.Add(new Object(341, 1));
+                                    possibleObjects.Add(new Object(221, 1));
+                                    possibleObjects.Add(new Object(64, 1));
+                                    possibleObjects.Add(new Object(60, 1));
+                                    possibleObjects.Add(new Object(70, 1));
+                                    break;
+                            }
+                        }
+                        if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
+                        {
+                            foreach (string itemName in g.ItemNames)
+                            {
+                                foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
                                 {
-                                    possibleObjects.Add(new Object(kvp.Key, 1));
+                                    if (kvp.Value.Split('/')[4] == itemName)
+                                    {
+                                        possibleObjects.Add(new Object(kvp.Key, 1));
+                                    }
                                 }
                             }
                         }
                     }
-                    __result = possibleObjects[r.Next(possibleObjects.Count)];
-                }
-                return false; // don't run original logic
+                        __result = possibleObjects[r.Next(possibleObjects.Count)];
+                    }
+                    return false; // don't run original logic
             }
             catch (Exception ex)
             {
