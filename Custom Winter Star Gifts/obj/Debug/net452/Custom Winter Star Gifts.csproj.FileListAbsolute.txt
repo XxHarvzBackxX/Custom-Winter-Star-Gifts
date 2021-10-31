@@ -1,0 +1,8 @@
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\bin\Debug\net452\CWSG.dll
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\bin\Debug\net452\CWSG.pdb
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\obj\Debug\net452\Custom Winter Star Gifts.csproj.AssemblyReference.cache
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\obj\Debug\net452\Custom Winter Star Gifts.AssemblyInfoInputs.cache
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\obj\Debug\net452\Custom Winter Star Gifts.AssemblyInfo.cs
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\obj\Debug\net452\Custom Winter Star Gifts.csproj.CoreCompileInputs.cache
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\obj\Debug\net452\CWSG.dll
+C:\Users\harve\source\repos\Custom Winter Star Gifts\Custom Winter Star Gifts\obj\Debug\net452\CWSG.pdb
