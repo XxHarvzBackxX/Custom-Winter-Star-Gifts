@@ -1,0 +1,11 @@
+{
+  "NPCGifts": [
+    {
+      "NameOfNPC": "All",
+      "ItemNames": [
+        "Apple"
+      ],
+      "Mode": "Overwrite"
+    }
+  ]
+}

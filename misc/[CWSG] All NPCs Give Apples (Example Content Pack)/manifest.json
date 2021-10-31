@@ -1,0 +1,11 @@
+{
+	"Name": "[CWSG] All NPCs Give Apples",
+	"Author": "XxHarvzBackxX",
+	"Version": "1.0.0",
+	"Description": "Makes all NPCs give you apples at the Feast of the Winter Star",
+	"UniqueID": "harvz.AllNPCGiveApples",
+	"MinimumApiVersion": "3.5.0",
+	"ContentPackFor": {
+		"UniqueID": "harvz.CWSG"
+	}
+}
