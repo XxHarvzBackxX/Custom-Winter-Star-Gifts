@@ -13,10 +13,11 @@ Next, create a `content.json` file. It should look similar to this:
   "NPCGifts": [
     {
       "NameOfNPC": "...",
-      "ItemNames": [
-        "..."
-      ],
-      "Mode": "..."
+      "ItemNames": {
+        "...": 1
+      },
+      "Mode": "...",
+      "Priority": 100
     }
   ]
 }
@@ -27,8 +28,9 @@ Next, create a `content.json` file. It should look similar to this:
 Field                | Valid Entries                        
 -------------------- | ------------------------------- 
 NameOfNPC            | (string) The internal name of the NPC you are targeting.<small>(Can also put 'All' if you want to apply to every NPC)</small>
-ItemNames            | (string array) Names of the items you wish to add for this target.    
-Mode                 | (string) Which mode to use. Accepts "Add" <small>(adds to existing list for this target)</small> or "Overwrite" <small>(overwrites existing list for this target).</small>   
+ItemNames            | (Dictionary<string, int>) Names of the items you wish to add for this target, accompanied by the quantity of items you wish to add.  
+Mode                 | (string) Which mode to use. Accepts "Add" <small>(adds to existing list for this target)</small> or "Overwrite" <small>(overwrites existing list for this target).</small>
+Priority             | (int) The order in the stack of which this should be patched (carries over to multiple content packs). This should be any number above 0, but you usually won't need to go much higher than 200.
 
 An example content pack can be found on the [Nexus page under files tab](https://www.nexusmods.com/stardewvalley/mods/10024?tab=files).
 
@@ -38,46 +40,52 @@ To add multiple targets, simply add multiple 'NPCGifts' entries. Copy and paste 
 {
   "NPCGifts": [
     {
-      "NameOfNPC": "Robin",
-      "ItemNames": [
-        "Apple", "Parsnip"
-      ],
-      "Mode": "Add"
-    },
+      "NameOfNPC": "All",
+      "ItemNames": {
+        "Parsnip": 1
+      },
+      "Mode": "Overwrite",
+      "Priority": 250
+    }
     {
-      "NameOfNPC": "Clint",
-      "ItemNames": [
-        "Prismatic Shard"
-      ],
-      "Mode": "Overwrite"
+      "NameOfNPC": "Robin",
+      "ItemNames": {
+        "Apple": 1
+      },
+      "Mode": "Add",
+      "Priority": 100
     }
   ]
 }
 ```
 
 ## Variety
-Have a combination of many modes, items and NPCs to make a fun collection of items, ideal for your vision. Example:
+Have a combination of many modes, items, quantities and NPCs to make a fun collection of items, ideal for your vision. Example:
 ```js
 {
   "NPCGifts": [
     {
       "NameOfNPC": "All",
-      "ItemNames": [
-        "Apple", "Parsnip"
-      ],
-      "Mode": "Overwrite"
-    },
+      "ItemNames": {
+        "Parsnip": 10,
+        "Apple": 5,
+        "Prismatic Shard": 1
+      },
+      "Mode": "Overwrite",
+      "Priority": 250
+    }
     {
       "NameOfNPC": "Robin",
-      "ItemNames": [
-        "Iridium Bar"
-      ],
-      "Mode": "Add"
+      "ItemNames": {
+        "Iridium Bar": 1
+      },
+      "Mode": "Add",
+      "Priority": 100
     }
   ]
 }
 ```
-This setup would make everyone give either an apple or a parsnip, except Robin, who could give an apple, a parsnip, or an iridium bar.
+This setup would make everyone give either 10 parsnips, 5 apples, or 1 prismatic shard, except Robin, who could give 10 parsnips, 5 apples, 1 prismatic shard, or 1 iridium bar.
 Make sure to combine many factors for some real variety!
 
 
