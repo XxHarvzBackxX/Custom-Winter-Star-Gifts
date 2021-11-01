@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -28,6 +29,7 @@ public class ModEntry : Mod
             if (!contentPack.HasFile("content.json"))
             {
                 Monitor.Log($"{contentPack.Manifest.Name} {contentPack.Manifest.Version} is missing a \"content.json\" file.");
+                contentPack.WriteJsonFile("content.json", new ModData());
             }
             else
             {
@@ -50,13 +52,16 @@ public class ModEntry : Mod
     public class NPCGifts
     {
         public string NameOfNPC { get; set; } = "Robin";
-        public string[] ItemNames { get; set; } = new string[] { "Parsnip" };
+        public Dictionary<string, int> ItemNames { get; set; } = new Dictionary<string, int>() { { "Parsnip", 1 } };
         public string Mode { get; set; } = "Overwrite"; // possibles: "Overwrite" or "Add"
+        public int Priority { get; set; } = 100;
         public NPCGifts()
         {
             NameOfNPC = "Robin";
-            ItemNames = new string[] { "Parsnip" };
+            ItemNames = new Dictionary<string, int>() { { "Parsnip", 1 } };
             Mode = "Overwrite";
+            Priority = 100;
+
         }
     }
     public class ObjectPatches
@@ -68,6 +73,10 @@ public class ModEntry : Mod
             Monitor = monitor;
             Helper = helper;
         }
+        public static NPCGifts[] OrderPatches(NPCGifts[] Data)
+        {
+            return Data.OrderByDescending(d => d.Priority).ToArray();
+        }
 
         public static bool getGiftFromNPC_Prefix(NPC who, ref Item __result)
         {
@@ -75,28 +84,35 @@ public class ModEntry : Mod
             {
                 Random r = new Random((int)Game1.uniqueIDForThisGame / 2 + Game1.year + Game1.dayOfMonth + Utility.getSeasonNumber(Game1.currentSeason) + who.getTileX());
                 List<Item> possibleObjects = new List<Item>();
-                foreach (ModData m in Data)
+                NPCGifts[] unorderedGifts = new NPCGifts[] { };
+                foreach (ModData g in Data)
                 {
-                    foreach (NPCGifts g in m.NPCGifts)
+                    foreach (NPCGifts e in g.NPCGifts)
                     {
-                        if (g.Mode == "Add")
+                        unorderedGifts.AddItem(e);
+                    }
+                }
+                NPCGifts[] orderedGifts = OrderPatches(unorderedGifts);
+                foreach (NPCGifts g in orderedGifts)
+                {
+                    if (g.Mode == "Add")
+                    {
+                        switch (who.Name)
                         {
-                            switch (who.Name)
-                            {
-                                case "Clint":
-                                    possibleObjects.Add(new Object(337, 1));
-                                    possibleObjects.Add(new Object(336, 5));
-                                    possibleObjects.Add(new Object(r.Next(535, 538), 5));
-                                    break;
-                                case "Marnie":
-                                    possibleObjects.Add(new Object(176, 12));
-                                    break;
-                                case "Robin":
-                                    possibleObjects.Add(new Object(388, 99));
-                                    possibleObjects.Add(new Object(390, 50));
-                                    possibleObjects.Add(new Object(709, 25));
-                                    break;
-                                case "Willy":
+                            case "Clint":
+                                possibleObjects.Add(new Object(337, 1));
+                                possibleObjects.Add(new Object(336, 5));
+                                possibleObjects.Add(new Object(r.Next(535, 538), 5));
+                                break;
+                            case "Marnie":
+                                possibleObjects.Add(new Object(176, 12));
+                                break;
+                            case "Robin":
+                                possibleObjects.Add(new Object(388, 99));
+                                possibleObjects.Add(new Object(390, 50));
+                                possibleObjects.Add(new Object(709, 25));
+                                break;
+                            case "Willy":
                                     possibleObjects.Add(new Object(690, 25));
                                     possibleObjects.Add(new Object(687, 1));
                                     possibleObjects.Add(new Object(703, 1));
@@ -132,19 +148,18 @@ public class ModEntry : Mod
                         }
                         if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
                         {
-                            foreach (string itemName in g.ItemNames)
+                            foreach (string itemName in g.ItemNames.Keys)
                             {
                                 foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
                                 {
                                     if (kvp.Value.Split('/')[4] == itemName)
                                     {
-                                        possibleObjects.Add(new Object(kvp.Key, 1));
+                                        possibleObjects.Add(new Object(kvp.Key, g.ItemNames[itemName]));
                                     }
                                 }
                             }
                         }
                     }
-                }
                 __result = possibleObjects[r.Next(possibleObjects.Count)];
                 return false; // don't run original logic
             }
