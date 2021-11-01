@@ -27,10 +27,10 @@ Next, create a `content.json` file. It should look similar to this:
 
 Field                | Valid Entries                        
 -------------------- | ------------------------------- 
-NameOfNPC            | (string) The internal name of the NPC you are targeting.<small>(Can also put 'All' if you want to apply to every NPC)</small>
-ItemNames            | (Dictionary<string, int>) Names of the items you wish to add for this target, accompanied by the quantity of items you wish to add.  
-Mode                 | (string) Which mode to use. Accepts "Add" <small>(adds to existing list for this target)</small> or "Overwrite" <small>(overwrites existing list for this target).</small>
-Priority             | (int) The order in the stack of which this should be patched (carries over to multiple content packs). This should be any number above 0, but you usually won't need to go much higher than 200.
+NameOfNPC            | `(string)` The internal name of the NPC you are targeting. <small>(Can also put 'All' if you want to apply to every NPC)</small>
+ItemNames            | `(Dictionary<string, int>)` Names of the items you wish to add for this target, accompanied by the quantity of items you wish to add.  
+Mode                 | `(string)` Which mode to use. Accepts "Add" <small>(adds to existing list for this target)</small> or "Overwrite" <small>(overwrites existing list for this target).</small>
+Priority             | `(int)` The order in the stack of which this should be patched (carries over to multiple content packs). This should be any number above 0, but you usually won't need to go much higher than 200.
 
 An example content pack can be found on the [Nexus page under files tab](https://www.nexusmods.com/stardewvalley/mods/10024?tab=files).
 
