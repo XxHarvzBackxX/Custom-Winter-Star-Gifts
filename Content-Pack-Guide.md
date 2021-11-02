@@ -12,10 +12,14 @@ Next, create a `content.json` file. It should look similar to this:
 {
   "NPCGifts": [
     {
+      "ItemNames": [
+        {
+          "Name": "...",
+          "Quantity": 1,
+          "Type": "Vanilla"
+        }
+      ],
       "NameOfNPC": "...",
-      "ItemNames": {
-        "...": 1
-      },
       "Mode": "...",
       "Priority": 100
     }
@@ -28,7 +32,7 @@ Next, create a `content.json` file. It should look similar to this:
 Field                | Valid Entries                        
 -------------------- | ------------------------------- 
 NameOfNPC            | `(string)` The internal name of the NPC you are targeting. <small>(Can also put 'All' if you want to apply to every NPC)</small>
-ItemNames            | `(Dictionary<string, int>)` Names of the items you wish to add for this target, accompanied by the quantity of items you wish to add.  
+ItemNames            | `(string, int, string)` The information about the items. `Type` being whether the item is 'Vanilla', 'JA' or 'DGA'.
 Mode                 | `(string)` Which mode to use. Accepts "Add" <small>(adds to existing list for this target)</small> or "Overwrite" <small>(overwrites existing list for this target).</small>
 Priority             | `(int)` The order in the stack of which this should be patched (carries over to multiple content packs). This should be any number above 0, but you usually won't need to go much higher than 200.
 
@@ -40,18 +44,26 @@ To add multiple targets, simply add multiple 'NPCGifts' entries. Copy and paste 
 {
   "NPCGifts": [
     {
-      "NameOfNPC": "All",
-      "ItemNames": {
-        "Parsnip": 1
-      },
-      "Mode": "Overwrite",
-      "Priority": 250
-    }
-    {
+      "ItemNames": [
+        {
+          "Name": "Apple",
+          "Quantity": 5,
+          "Type": "Vanilla"
+        }
+      ],
       "NameOfNPC": "Robin",
-      "ItemNames": {
-        "Apple": 1
-      },
+      "Mode": "Overwrite",
+      "Priority": 100
+    },
+    {
+      "ItemNames": [
+        {
+          "Name": "Apple",
+          "Quantity": 5,
+          "Type": "Vanilla"
+        }
+      ],
+      "NameOfNPC": "Clint",
       "Mode": "Add",
       "Priority": 100
     }
@@ -60,32 +72,48 @@ To add multiple targets, simply add multiple 'NPCGifts' entries. Copy and paste 
 ```
 
 ## Variety
-Have a combination of many modes, items, quantities and NPCs to make a fun collection of items, ideal for your vision. Example:
+Have a combination of many modes, items, quantities, NPCs, and custom / non-custom items to make a fun collection of items, ideal for your vision. Example:
 ```js
 {
   "NPCGifts": [
     {
+      "ItemNames": [
+        {
+          "Name": "Apple",
+          "Quantity": 5,
+          "Type": "Vanilla"
+        },
+        {
+          "Name": "Parsnip",
+          "Quantity": 4,
+          "Type": "Vanilla"
+        }
+      ],
       "NameOfNPC": "All",
-      "ItemNames": {
-        "Parsnip": 10,
-        "Apple": 5,
-        "Prismatic Shard": 1
-      },
       "Mode": "Overwrite",
-      "Priority": 250
-    }
+      "Priority": 100
+    },
     {
+      "ItemNames": [
+        {
+          "Name": "Iridium Bar",
+          "Quantity": 1,
+          "Type": "Vanilla"
+        },
+        {
+          "Name": "Pathos Cookies",
+          "Quantity": 1,
+          "Type": "JA"
+        }
+      ],
       "NameOfNPC": "Robin",
-      "ItemNames": {
-        "Iridium Bar": 1
-      },
       "Mode": "Add",
       "Priority": 100
     }
   ]
 }
 ```
-This setup would make everyone give either 10 parsnips, 5 apples, or 1 prismatic shard, except Robin, who could give 10 parsnips, 5 apples, 1 prismatic shard, or 1 iridium bar.
+This setup would make everyone give either 5 apples, or 4 parsnips, except Robin, who could give 5 apples, 4 parsnips, 1 iridium bar or 1 'Pathos Cookies' which is a custom JA item.
 Make sure to combine many factors for some real variety!
 
 
