@@ -119,7 +119,7 @@ public class ModEntry : Mod
                 NPCGifts[] orderedGifts = OrderPatches(unorderedGifts);
                 foreach (NPCGifts g in orderedGifts)
                 {
-                            if (g.Mode == "Add")
+                            if (g.Mode == "AddToVanilla")
                             {
                                 switch (who.Name)
                                 {
@@ -170,52 +170,101 @@ public class ModEntry : Mod
                                         break;
                                 }
                             }
-                            if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
+                    if (g.Mode == "Overwrite")
+                    {
+                        possibleObjects.Clear();
+                        if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
+                        {
+                            foreach (ItemNames it in g.ItemNames)
                             {
-                                foreach (ItemNames it in g.ItemNames)
+                                if (it.Type == "Vanilla")
                                 {
-                                    if (it.Type == "Vanilla")
+                                    foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
                                     {
-                                        foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
+                                        if (kvp.Value.Split('/')[4] == it.Name)
                                         {
-                                            if (kvp.Value.Split('/')[4] == it.Name)
-                                            {
-                                                possibleObjects.Add(new Object(kvp.Key, it.Quantity));
-                                            }
-                                        }
-                                    }
-                                    else if (it.Type == "JA")
-                                    {
-                                        int ID = 0;
-                                        try
-                                        {
-                                            ID = JAAPI.GetObjectId(it.Name);
-                                        }
-                                        catch
-                                        {
-                                            Monitor.Log($"The item {it.Name} does not exist in the JA registry. Are you sure it is a JA item?", LogLevel.Error);
-                                        }
-                                        possibleObjects.Add(new Object(ID, it.Quantity));
-                                    }
-                                    else if (it.Type == "DGA")
-                                    {
-                                        try
-                                        {
-                                            Item i = (Item)DGAAPI.SpawnDGAItem(DGAAPI.GetDGAItemId(it.Name));
-                                            i.Stack = it.Quantity;
-                                            possibleObjects.Add(i);
-                                        }
-                                        catch
-                                        {
-                                            Monitor.Log($"The item {it.Name} does not exist in the DGA registry. Are you sure it is a DGA item?", LogLevel.Error);
+                                            possibleObjects.Add(new Object(kvp.Key, it.Quantity));
                                         }
                                     }
                                 }
+                                else if (it.Type == "JA")
+                                {
+                                    int ID = 0;
+                                    try
+                                    {
+                                        ID = JAAPI.GetObjectId(it.Name);
+                                    }
+                                    catch
+                                    {
+                                        Monitor.Log($"The item {it.Name} does not exist in the JA registry. Are you sure it is a JA item?", LogLevel.Error);
+                                    }
+                                    possibleObjects.Add(new Object(ID, it.Quantity));
+                                }
+                                else if (it.Type == "DGA")
+                                {
+                                    try
+                                    {
+                                        Item i = (Item)DGAAPI.SpawnDGAItem(DGAAPI.GetDGAItemId(it.Name));
+                                        i.Stack = it.Quantity;
+                                        possibleObjects.Add(i);
+                                    }
+                                    catch
+                                    {
+                                        Monitor.Log($"The item {it.Name} does not exist in the DGA registry. Are you sure it is a DGA item?", LogLevel.Error);
+                                    }
+                                }
                             }
+                        }
+                    }
+                    else if (g.Mode == "AddToExisting")
+                    {
+                        if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
+                        {
+                            foreach (ItemNames it in g.ItemNames)
+                            {
+                                if (it.Type == "Vanilla")
+                                {
+                                    foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
+                                    {
+                                        if (kvp.Value.Split('/')[4] == it.Name)
+                                        {
+                                            possibleObjects.Add(new Object(kvp.Key, it.Quantity));
+                                        }
+                                    }
+                                }
+                                else if (it.Type == "JA")
+                                {
+                                    int ID = 0;
+                                    try
+                                    {
+                                        ID = JAAPI.GetObjectId(it.Name);
+                                    }
+                                    catch
+                                    {
+                                        Monitor.Log($"The item {it.Name} does not exist in the JA registry. Are you sure it is a JA item?", LogLevel.Error);
+                                    }
+                                    possibleObjects.Add(new Object(ID, it.Quantity));
+                                }
+                                else if (it.Type == "DGA")
+                                {
+                                    try
+                                    {
+                                        Item i = (Item)DGAAPI.SpawnDGAItem(DGAAPI.GetDGAItemId(it.Name));
+                                        i.Stack = it.Quantity;
+                                        possibleObjects.Add(i);
+                                    }
+                                    catch
+                                    {
+                                        Monitor.Log($"The item {it.Name} does not exist in the DGA registry. Are you sure it is a DGA item?", LogLevel.Error);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                if (possibleObjects.Count <= 1)
+                if (possibleObjects.Count >= 1)
                 {
-                    __result = possibleObjects[r.Next(0, possibleObjects.Count)];
+                    __result = possibleObjects[r.Next(possibleObjects.Count)];
                 }
                 else
                 {
