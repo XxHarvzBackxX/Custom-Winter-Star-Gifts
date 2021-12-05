@@ -53,7 +53,7 @@ To add multiple targets, simply add multiple 'NPCGifts' entries. Copy and paste 
       ],
       "NameOfNPC": "Robin",
       "Mode": "Overwrite",
-      "Priority": 100
+      "Priority": 101
     },
     {
       "ItemNames": [
@@ -91,7 +91,7 @@ Have a combination of many modes, items, quantities, NPCs, and custom / non-cust
       ],
       "NameOfNPC": "All",
       "Mode": "Overwrite",
-      "Priority": 100
+      "Priority": 101
     },
     {
       "ItemNames": [
