@@ -24,15 +24,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net452"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net452": {
-            "targetAlias": "net452",
+          "net5.0": {
+            "targetAlias": "net5",
             "projectReferences": {}
           }
         },
@@ -43,12 +43,27 @@
         }
       },
       "frameworks": {
-        "net452": {
-          "targetAlias": "net452",
+        "net5.0": {
+          "targetAlias": "net5",
           "dependencies": {
             "Pathoschild.Stardew.ModBuildConfig": {
               "target": "Package",
-              "version": "[3.3.0, )"
+              "version": "[4.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
